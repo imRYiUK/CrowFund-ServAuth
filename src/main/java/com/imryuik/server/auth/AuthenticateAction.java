@@ -11,6 +11,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Builder
 public class AuthenticateAction {
-    private User user;
     private String token;
 }

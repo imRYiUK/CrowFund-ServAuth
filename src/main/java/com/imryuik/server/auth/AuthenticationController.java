@@ -28,6 +28,6 @@ public class AuthenticationController {
 
     @PostMapping("/verify")
     public ResponseEntity<Boolean> hello(@RequestBody AuthenticateAction request) {
-        return ResponseEntity.ok(jwtService.isTokenValid(request.getToken(), request.getUser()));
+        return ResponseEntity.ok(jwtService.isTokenValid2(request.getToken()));
     }
 }
