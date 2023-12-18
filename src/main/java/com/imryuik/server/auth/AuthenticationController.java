@@ -2,6 +2,7 @@ package com.imryuik.server.auth;
 
 import com.imryuik.server.entity.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.imryuik.server.config.JwtService;
@@ -11,9 +12,10 @@ import com.imryuik.server.config.JwtService;
 @CrossOrigin
 @RequiredArgsConstructor
 public class AuthenticationController {
-
-    private final AuthenticateService service;
-    private final JwtService jwtService;
+    @Autowired
+    private AuthenticateService service;
+    @Autowired
+    private JwtService jwtService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest registerRequest){
@@ -23,11 +25,21 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest){
-        return ResponseEntity.ok(service.authenticate(authenticationRequest));
+        AuthenticationResponse rep = service.authenticate(authenticationRequest);
+        System.out.println(rep);
+        return ResponseEntity.ok(rep);
     }
 
     @PostMapping("/verify")
     public ResponseEntity<Boolean> hello(@RequestBody AuthenticateAction request) {
-        return ResponseEntity.ok(jwtService.isTokenValid2(request.getToken()));
+//        System.out.println("hey");
+        try {
+            boolean rep = jwtService.isTokenValid2(request.getToken());
+            System.out.println(rep);
+            return ResponseEntity.ok(rep);
+        } catch (Exception error) {
+            System.out.println("no");
+            return ResponseEntity.ok(Boolean.FALSE);
+        }
     }
 }
